@@ -4,24 +4,25 @@ class ChartBar extends StatelessWidget {
   final String label;
   final double amount;
   final double total;
+  final double height;
 
-  ChartBar(this.label, this.amount, this.total);
+  ChartBar(this.label, this.amount, this.total, this.height);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         Container(
-          height: 20,
+          height: height * 0.15,
           child: FittedBox(
             child: Text('₹${amount.toStringAsFixed(0)}'),
           ),
         ),
         SizedBox(
-          height: 4,
+          height: height * 0.05,
         ),
         Container(
-          height: 60,
+          height: height * 0.6,
           width: 10,
           child: Stack(
             children: <Widget>[
@@ -45,9 +46,14 @@ class ChartBar extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 4,
+          height: height * 0.05,
         ),
-        Text(label),
+        Container(
+          height: height * 0.15,
+          child: FittedBox(
+            child: Text(label),
+          )
+        ),
       ],
     );
   }

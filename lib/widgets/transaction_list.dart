@@ -10,35 +10,32 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 300,
-      child: ListView.builder(
-        itemBuilder: (ctx, index) {
-          return Card(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: ListTile(
-              leading: CircleAvatar(
-                radius: 30,
-                child: Padding(
-                  padding: const EdgeInsets.all(6.0),
-                  child: FittedBox(
-                      child: Text('₹ ${_userTransactions[index].amount.toStringAsFixed(2)}')
-                  ),
+    return ListView.builder(
+      itemBuilder: (ctx, index) {
+        return Card(
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          child: ListTile(
+            leading: CircleAvatar(
+              radius: 30,
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: FittedBox(
+                    child: Text('₹ ${_userTransactions[index].amount.toStringAsFixed(2)}')
                 ),
               ),
-              title: Text(_userTransactions[index].title),
-              subtitle: Text(DateFormat.yMMMd().format(_userTransactions[index].date)),
-              trailing: IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  _deleteTransaction(index);
-                },
-              ),
-            )
-          );
-        },
-        itemCount: _userTransactions.length,
-      ),
+            ),
+            title: Text(_userTransactions[index].title),
+            subtitle: Text(DateFormat.yMMMd().format(_userTransactions[index].date)),
+            trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                _deleteTransaction(index);
+              },
+            ),
+          )
+        );
+      },
+      itemCount: _userTransactions.length,
     );
   }
 
