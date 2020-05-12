@@ -1,19 +1,49 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addNewTransaction;
 
-  NewTransaction(this.addNewTransaction);
+  NewTransaction(this.addNewTransaction) {
+    print('Constructor New transaction');
+  }
 
   @override
-  _NewTransactionState createState() => _NewTransactionState();
+  _NewTransactionState createState() {
+    print('Create State New transaction');
+    return _NewTransactionState();
+  }
 }
 
 class _NewTransactionState extends State<NewTransaction> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   DateTime _selectedDate;
+
+  _NewTransactionState() {
+    print('Constructor New transaction State');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print('initState New transaction State');
+  }
+
+  @override
+  void didUpdateWidget(NewTransaction oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    print('didUpdateWidget New transaction State');
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print('dispose New transaction State');
+  }
 
   _submitData() {
     final title = _titleController.text;
@@ -70,14 +100,26 @@ class _NewTransactionState extends State<NewTransaction> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(_selectedDate == null ? 'No date Selected' : DateFormat.yMMMd().format(_selectedDate)),
+                Platform.isIOS ? CupertinoButton(
+                  child: Text('Choose Date', style: TextStyle(fontWeight: FontWeight.bold),),
+                  onPressed: _presentDatePicker,
+                ) :
                 FlatButton(
-                  color: Theme.of(context).primaryColor,
                   child: Text('Choose Date', style: TextStyle(fontWeight: FontWeight.bold),),
                   onPressed: _presentDatePicker,
                 )
               ],
             ),
-            FlatButton(
+            Platform.isIOS ? CupertinoButton(
+              color: Theme.of(context).primaryColor,
+              child: Text(
+                  'Add Transaction',
+                  style: TextStyle(
+                      color: Theme.of(context).textTheme.button.color
+                  )
+              ),
+              onPressed: _submitData,
+            ) : FlatButton(
               color: Theme.of(context).primaryColor,
               child: Text(
                 'Add Transaction',

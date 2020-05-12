@@ -1,11 +1,16 @@
+import 'dart:io';
 import 'package:expense/models/transaction.dart';
 import 'package:expense/widgets/chart.dart';
 import 'package:expense/widgets/empty_list.dart';
 import 'package:expense/widgets/new_transaction.dart';
 import 'package:expense/widgets/transaction_list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -76,19 +81,39 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final appBar = AppBar(
-      title: Text('Flutter App'),
+  Widget _iosNavigationBar() {
+    return CupertinoNavigationBar(
+      middle: Text('Finances'),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          GestureDetector(
+            child: Icon(CupertinoIcons.add),
+            onTap: () {
+              startAddNewTransaction(context);
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _androidNavigationBar() {
+    return AppBar(
+      title: Text('Finances'),
       actions: <Widget>[
         IconButton(icon: Icon(Icons.add), color: Colors.white, onPressed: () {
           startAddNewTransaction(context);
         },)
       ],
     );
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final PreferredSizeWidget appBar = Platform.isIOS ? _iosNavigationBar() : _androidNavigationBar();
+    final body =  SafeArea(child:
+      SingleChildScrollView(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,8 +131,15 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+    );
+    return Platform.isIOS ? CupertinoPageScaffold(
+      navigationBar: appBar,
+      child: body,
+    ) : Scaffold(
+      appBar: appBar,
+      body: body,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(child: Icon(Icons.add), onPressed: () => startAddNewTransaction(context),),
+      floatingActionButton: Platform.isIOS ? Container() : FloatingActionButton(child: Icon(Icons.add), onPressed: () => startAddNewTransaction(context),)
     );
   }
 }
